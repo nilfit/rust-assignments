@@ -8,7 +8,7 @@ fn main() {
     println!("Guess the number!");
     let secret_number = rand::thread_rng().gen_range(1,101);
     let mut tries = 0;
-    let mut guesses: Vec<(u32, String)> = Vec::new();
+    let mut guesses = Vec::new();
     loop {
         println!("Please input your guess.");
         // _s to prevent shadowing so we can add the String to guesses later
@@ -41,7 +41,7 @@ fn main() {
         }
     }
     println!("Your guesses:");
-    for &(n, ref guess) in guesses.iter() {
+    for (n, ref guess) in guesses {
         println!("{}\t{}", n, guess.trim());
     }
 }
