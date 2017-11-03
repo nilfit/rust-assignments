@@ -44,4 +44,8 @@ fn main() {
     for &(n, ref guess) in guesses.iter() {
         println!("{}\t{}", n, guess.trim());
     }
+    println!("Your guesses:");
+    for &(n, ref guess) in guesses.iter() {
+        println!("{}\t{}", n, guess.trim());
+    }
 }
