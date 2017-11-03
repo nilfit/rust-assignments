@@ -10,13 +10,10 @@ fn main() {
     let mut tries = 0;
     loop {
         println!("Please input your guess.");
-        let mut guess = String::new();
-        io::stdin().read_line(&mut guess)
-            .expect("Failed to read line");
-        let guess: u32 = match guess.trim().parse() {
+        let guess = match read_u32() {
             Ok(num) => num,
-            Err(_) => {
-                println!("Please type a number!");
+            Err(e) => {
+                println!("{}", e);
                 continue;
             }
         };
@@ -35,5 +32,17 @@ fn main() {
                 break;
             }
         }
+    }
+}
+
+fn read_u32() -> Result<u32, String> {
+    let mut s = String::new();
+    match io::stdin().read_line(&mut s) {
+        Err(e) => return Err(format!("{:?}", e)),
+        _ => ()
+    };
+    match s.trim().parse() {
+        Ok(num) => Ok(num),
+        Err(e) => Err(format!("in parsing u32, {:?}", e))
     }
 }
