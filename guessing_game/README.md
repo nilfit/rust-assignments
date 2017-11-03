@@ -6,4 +6,4 @@ Use `cargo run` in the project root.
 
 You will be presented with a text interface that asks you to guess the secret number. With each guess, you get feedback on whether your guess was high or low. The number of guesses is also counted.
 
-After winning, the guess history will be displayed.
+After winning, the last 3 guesses will be displayed.

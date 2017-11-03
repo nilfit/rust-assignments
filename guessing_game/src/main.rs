@@ -40,8 +40,9 @@ fn main() {
             }
         }
     }
-    println!("Your guesses:");
-    for &(n, ref guess) in guesses.iter() {
+    let num_displayed_guesses = 3;
+    println!("Your last guesses:");
+    for &(n, ref guess) in guesses.iter().rev().take(num_displayed_guesses) {
         println!("{}\t{}", n, guess.trim());
     }
 }
