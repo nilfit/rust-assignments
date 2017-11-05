@@ -41,8 +41,11 @@ fn main() {
             }
         }
     }
-    println!("Your guesses:");
-    for (n, ref guess) in guesses {
+    println!("Your last guesses:");
+    // convert to something we can sort so that we can get the last 3 guesses
+    let mut guesses: Vec<_> = guesses.into_iter().collect();
+    guesses.sort();
+    for &(n, ref guess) in guesses.iter().rev().take(3) {
         println!("{}\t{}", n, guess.trim());
     }
 }

@@ -6,4 +6,4 @@ Use `cargo run` in the project root.
 
 You will be presented with a text interface that asks you to guess the secret number. With each guess, you get feedback on whether your guess was high or low. The number of guesses is also counted.
 
-After winning, the guess history will be displayed in [arbitrary order](https://doc.rust-lang.org/std/collections/struct.HashMap.html#method.iter), because a HashMap was used to store the guesses.
+After winning, the last 3 guesses will be displayed. This is done by (inefficiently) converting the HashMap to a different collection and then sorting by key.
