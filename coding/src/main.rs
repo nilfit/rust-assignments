@@ -11,8 +11,8 @@ static CODED: [u32; 132] = [0x015e7a47, 0x2ef84ebb, 0x177a8db4, 0x1b722ff9, 0x5d
 static mut DECODED: [u8; 132] = [0; 132];
 
 fn main() {
-    decode(0);
     unsafe {
+        decode(&CODED, &mut DECODED);
         println!("{}", from_utf8(&DECODED[..]).unwrap());
     }
 }
@@ -27,20 +27,16 @@ fn codgen() -> u32 {
     }
 }
 
-fn decode(i: usize) -> u32 {
+fn decode(wordarr: &[u32], bytearr: &mut [u8]) -> u32 {
     // one's complement
     let x = 0xffffffff ^ codgen();
-    if CODED[i] == 0 {
-        unsafe {
-            DECODED[i] = 0;
-        }
+    if wordarr[0] == 0 {
+        bytearr[0] = 0;
         x
     } else {
-        let y = decode(i + 1);
-        let m = x.wrapping_sub(y).wrapping_sub(CODED[i]);
-        unsafe {
-            DECODED[i] = (m >> 13) as u8;
-        }
+        let y = decode(&wordarr[1..], &mut bytearr[1..]);
+        let m = x.wrapping_sub(y).wrapping_sub(wordarr[0]);
+        bytearr[0] = (m >> 13) as u8;
         // two's complement
         let r: u32 = - (codgen() as i32) as u32;
         x.wrapping_add(y).wrapping_add(m).wrapping_add(r).wrapping_add(5)
