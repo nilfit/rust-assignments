@@ -24,9 +24,8 @@ fn main() {
     }
     let mut stdout = hio::hstdout().unwrap();
     unsafe {
-        writeln!(stdout, "{}", from_utf8(&DECODED[..]).unwrap());
+        let _ = writeln!(stdout, "{}", from_utf8(&DECODED[..]).unwrap());
     }
-    //writeln!(stdout, "Hello, world!").unwrap();
 }
 
 
