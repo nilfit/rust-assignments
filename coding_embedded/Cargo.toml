@@ -1,0 +1,19 @@
+[package]
+version = "0.1.0"
+name = "coding_embedded"
+
+[dependencies]
+cortex-m = "0.3.0"
+cortex-m-semihosting = "0.2.0"
+
+[dependencies.cortex-m-rt]
+features = ["abort-on-panic"]
+version = "0.3.3"
+
+[dependencies.stm32f40x]
+features = ["rt"]
+git = "https://gitlab.henriktjader.com/pln/STM32F40x"
+
+[profile.release]
+debug = true
+lto = true
