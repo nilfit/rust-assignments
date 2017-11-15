@@ -1,10 +1,15 @@
 #![no_std]
 
+extern crate cortex_m;
 extern crate cortex_m_semihosting;
 extern crate stm32f40x;
 
 use core::fmt::Write;
 use core::str::from_utf8;
+
+use stm32f40x::DWT;
+
+use cortex_m::interrupt;
 
 use cortex_m_semihosting::hio;
 
@@ -19,10 +24,18 @@ static CODED: [u32; 132] = [0x015e7a47, 0x2ef84ebb, 0x177a8db4, 0x1b722ff9, 0x5d
 static mut DECODED: [u8; 132] = [0; 132];
 
 fn main() {
-    unsafe {
-        decode(&CODED, &mut DECODED);
-    }
+    interrupt::free(|cs| DWT.borrow(cs).enable_cycle_counter());
     let mut stdout = hio::hstdout().unwrap();
+    unsafe {
+        interrupt::free(|cs| {
+            DWT.borrow(cs).cyccnt.write(0);
+        });
+        decode(&CODED, &mut DECODED);
+        interrupt::free(|cs| {
+            let cnt = DWT.borrow(cs).cyccnt.read();
+            let _ = writeln!(stdout, "decoded in {} cycles", cnt);
+        });
+    }
     unsafe {
         let _ = writeln!(stdout, "{}", from_utf8(&DECODED[..]).unwrap());
     }
