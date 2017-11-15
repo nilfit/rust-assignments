@@ -49,7 +49,14 @@ But unto the wicked God saith, What hast thou to do to declare  my statutes, or 
 ```
 
 # Memory safety
-TODO
+The compiler is unable to detect situations where the stack grows into and overlaps with the heap. Because the code uses a lot of `unsafe`, we also lose some of the memory safety that the compiler would normally provide. We are still protected against buffer overflows and over-reads, although the checks only happen at runtime.
 
 # Performance
-TODO
+Code was added to measure the number of the recursive `decode` function takes for in debug and release mode. Note that it takes some cycles after resetting the clock counter before `decode` runs, as well as after `decode returns`, before the clock counter is read. The measurements in the table do not take this overhead into account. I tried to minimize this by using `DWT.get` when accessing the DWT instead of using the slower (but safer) `interrupt::free` block.
+
+| Mode  |String                |Cycles|
+|-------|:---------------------|-----:|
+|debug  |abc                   |  4240|
+|release|abc                   |   325|
+|debug  |But unto the wicked...|172048|
+|release|But unto the wicked...| 11589|
